@@ -1,0 +1,5 @@
+# In Travis CI only the shell scripts are checked.
+# Docker image test and validation is done by Docker Hub Autobuild.
+language: bash
+script:
+  - make lint

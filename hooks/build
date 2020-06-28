@@ -1,0 +1,9 @@
+#!/bin/sh
+# Build hook used by Docker Hub Autobuild to build the clitest image.
+# https://docs.docker.com/docker-hub/builds/advanced/
+#
+# DOCKERFILE_PATH: the dockerfile currently being built.
+# DOCKER_REPO: the name of the Docker repository being built.
+# DOCKER_TAG: the Docker repository tag being built.
+
+docker build --build-arg DOCKER_TAG -f "$DOCKERFILE_PATH" -t "$DOCKER_REPO:$DOCKER_TAG" .

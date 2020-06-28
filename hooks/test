@@ -1,0 +1,43 @@
+#!/bin/bash
+# Docker Hub Autobuild test script, run before publishing the image
+# https://docs.docker.com/docker-hub/builds/advanced/
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -x
+
+# Environment variables set by Autobuild
+image=$DOCKER_REPO   # aureliojargas/clitest
+version=$DOCKER_TAG  # 0.1.0
+
+# URL for clitest sources archive at this specific version
+clitest_url="https://github.com/aureliojargas/clitest/archive/${version}.tar.gz"
+
+# Top dir inside the clitest archive
+clitest_dir="clitest-${version}"
+
+# Get clitest sources for the specified $version
+# (will be extracted to $clitest_dir)
+curl -s -L "$clitest_url" | tar xzf -
+
+# Some tests fail in 0.1.0 due slightly different tool's error messages.
+# Before 0.3.0, test file was under dev/.
+case "$version" in
+    0.1.0)
+        args="--first --progress none --skip 13,147,241 dev/test.md"
+        ;;
+    0.2.0)
+        args="--first --progress none dev/test.md"
+        ;;
+    *)
+        args="--first --progress none test.md"
+        ;;
+esac
+
+# Run clitest own test suite inside the container environment
+# shellcheck disable=SC2086
+docker run --rm -t -v "${PWD}/$clitest_dir":/mnt "$image:$version" $args
+
+# Clean up
+rm -r "$clitest_dir"
