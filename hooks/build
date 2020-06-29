@@ -6,4 +6,6 @@
 # DOCKER_REPO: the name of the Docker repository being built.
 # DOCKER_TAG: the Docker repository tag being built.
 
+set -x
+
 docker build --build-arg DOCKER_TAG -f "$DOCKERFILE_PATH" -t "$DOCKER_REPO:$DOCKER_TAG" .
