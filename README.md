@@ -37,6 +37,4 @@ To build (and test) this image in your machine, git tags are not necessary. Just
 
 Adding the `latest` tag to the most recent image version is a manual process. Example:
 
-    docker pull aureliojargas/clitest:1.2.3
-    docker tag  aureliojargas/clitest:1.2.3 aureliojargas/clitest:latest
-    docker push aureliojargas/clitest:latest
+    make latest version=1.2.3

@@ -16,3 +16,8 @@ build:
 test:
 	DOCKER_TAG=$(version) DOCKER_REPO=$(image) \
 		./hooks/test
+
+latest:
+	docker pull $(image):$(version)
+	docker tag  $(image):$(version) $(image):latest
+	docker push $(image):latest
