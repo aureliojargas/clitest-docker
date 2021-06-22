@@ -1,0 +1,15 @@
+# In the CI only the shell scripts are checked.
+# Docker image test and validation is done by Docker Hub Autobuild.
+
+# https://docs.github.com/en/actions/reference
+
+name: Check
+on: push
+jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo snap install shfmt
+      - run: make lint
